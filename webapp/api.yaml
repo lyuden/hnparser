@@ -1,0 +1,57 @@
+swagger: "2.0"
+info:
+  title: "HN Parse"
+  description: "Simple API for service that parser HN"
+  version: "0.0"
+
+paths:
+  /posts:
+    get:
+      description: "Multiple status values can be provided with comma separated strings"
+      operationId: "findPetsByStatus"
+      parameters:
+      - name: "offset"
+        in: "query"
+        description: "Number of posts skipped from the beginning of response"
+        type: "integer"
+        minimum: 0
+      - name: "limit"
+        type: "integer"
+        in: "query"
+        minimum: 0
+        description: "Number of results in response"
+      - name: "order"
+        in: "query"
+        description: "Name of the field that would be used for ordering. One of title,id,created_at. Default id"
+        type: "string"
+        pattern: "id|title|created_at|url"
+      - name: "descending"
+        in: "query"
+        description: "Set descenging order for results"
+        type: "bool"
+      - name: "force_update"
+        description: "Force server to update db with new infor from origin immediately and use results"
+        type: "bool"
+      responses:
+        200:
+          description: "List of posts"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Post"
+        400:
+          description: "Invalid value"
+
+definitions:
+  Post:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+        minimum: 0
+      title:
+        type: "string"
+      created_at:
+        type: "string"
+        format: "date-time"

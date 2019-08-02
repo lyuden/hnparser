@@ -1,0 +1,26 @@
+version: '3'
+services:
+  hnparser:
+    build: ./
+    env_file:
+      - ./.env
+    volumes:
+      - ./webapp/:/hnparser/webapp/
+    ports:
+      - 11000:8080
+    depends_on:
+      - db
+    networks:
+      - main-network
+  db:
+    image: postgres
+    container_name: db
+    expose:
+      - 5432
+    env_file:
+      - ./.env
+    networks:
+      - main-network
+networks:
+  main-network:
+
